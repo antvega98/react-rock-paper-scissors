@@ -1,8 +1,8 @@
 import {useState} from 'react';
 import './App.css';
 
-type Move = "rock" | "paper" | "scissors";
-const MOVES: readonly Move[] = ["rock", "paper", "scissors"];
+const MOVES = ["rock", "paper", "scissors"] as const;
+type Move = (typeof MOVES)[number];
 
 function getRandomMove(): Move {
   return MOVES[Math.floor(Math.random() * 3)];
@@ -10,9 +10,16 @@ function getRandomMove(): Move {
 getRandomMove();
 function App() {
   const [computerMove, setComputerMove] = useState<Move>(getRandomMove());
+  const [playerMove, setPlayerMove] = useState<Move | null>(null);
+
   return (
     <div className="App">
       <div>Computer Move: {computerMove}</div>
+
+      <div>Player Move: {playerMove ?? "Make a move!"}</div>
+      <button onClick={()=>setPlayerMove("rock")}>Rock</button>
+      <button onClick={()=>setPlayerMove("paper")}>Paper</button>
+      <button onClick={()=>setPlayerMove("scissors")}>Scissors</button>
     </div>
   );
 }
